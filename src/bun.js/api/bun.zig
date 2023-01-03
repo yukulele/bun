@@ -4004,4 +4004,5 @@ pub const JSZlib = struct {
     }
 };
 
+pub usingnamespace @import("./postgres.zig");
 pub usingnamespace @import("./bun/subprocess.zig");

@@ -1080,6 +1080,8 @@ enum ReadableStreamTag : int32_t {
     Bytes = 4,
 };
 
+extern "C" EncodedJSValue Bun__PostgreSQL__connect(JSGlobalObject*, CallFrame*);
+
 // we're trying out a new way to do this lazy loading
 static JSC_DEFINE_HOST_FUNCTION(functionLazyLoad,
     (JSC::JSGlobalObject * globalObject, JSC::CallFrame* callFrame))
@@ -1099,6 +1101,7 @@ JSC:
         static NeverDestroyed<const String> bunStreamString(MAKE_STATIC_STRING_IMPL("bun:stream"));
         static NeverDestroyed<const String> noopString(MAKE_STATIC_STRING_IMPL("noop"));
         static NeverDestroyed<const String> createImportMeta(MAKE_STATIC_STRING_IMPL("createImportMeta"));
+        static NeverDestroyed<const String> bunSql(MAKE_STATIC_STRING_IMPL("bun:sql"));
 
         JSC::JSValue moduleName = callFrame->argument(0);
         if (moduleName.isNumber()) {
@@ -1152,6 +1155,11 @@ JSC:
         if (string == fileURLToPathString) {
             return JSValue::encode(
                 JSFunction::create(vm, globalObject, 1, fileURLToPathString, functionFileURLToPath, ImplementationVisibility::Public, NoIntrinsic));
+        }
+
+        if (string == bunSql) {
+            return JSC::JSValue::encode(
+                JSFunction::create(vm, globalObject, 1, bunSql, Bun__PostgreSQL__connect, ImplementationVisibility::Public, NoIntrinsic));
         }
 
         if (string == bunStreamString) {

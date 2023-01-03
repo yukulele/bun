@@ -94,6 +94,12 @@ JSC::Structure* JSMatchedRouteStructure() { return m_JSMatchedRoute.getInitializ
   JSC::LazyClassStructure m_JSMatchedRoute;
   bool hasJSMatchedRouteSetterValue { false };
   mutable JSC::WriteBarrier<JSC::Unknown> m_JSMatchedRouteSetterValue;
+JSC::Structure* JSPostgresSQLDatabaseStructure() { return m_JSPostgresSQLDatabase.getInitializedOnMainThread(this); }
+        JSC::JSObject* JSPostgresSQLDatabaseConstructor() { return m_JSPostgresSQLDatabase.constructorInitializedOnMainThread(this); }
+        JSC::JSValue JSPostgresSQLDatabasePrototype() { return m_JSPostgresSQLDatabase.prototypeInitializedOnMainThread(this); }
+  JSC::LazyClassStructure m_JSPostgresSQLDatabase;
+  bool hasJSPostgresSQLDatabaseSetterValue { false };
+  mutable JSC::WriteBarrier<JSC::Unknown> m_JSPostgresSQLDatabaseSetterValue;
 JSC::Structure* JSExpectStructure() { return m_JSExpect.getInitializedOnMainThread(this); }
         JSC::JSObject* JSExpectConstructor() { return m_JSExpect.constructorInitializedOnMainThread(this); }
         JSC::JSValue JSExpectPrototype() { return m_JSExpect.prototypeInitializedOnMainThread(this); }

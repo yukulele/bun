@@ -959,6 +959,93 @@ public:
     mutable JSC::WriteBarrier<JSC::Unknown> m_scriptSrc;
 };
 
+class JSPostgresSQLDatabase final : public JSC::JSDestructibleObject {
+public:
+    using Base = JSC::JSDestructibleObject;
+    static JSPostgresSQLDatabase* create(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure, void* ctx);
+
+    DECLARE_EXPORT_INFO;
+    template<typename, JSC::SubspaceAccess mode> static JSC::GCClient::IsoSubspace* subspaceFor(JSC::VM& vm)
+    {
+        if constexpr (mode == JSC::SubspaceAccess::Concurrently)
+            return nullptr;
+        return WebCore::subspaceForImpl<JSPostgresSQLDatabase, WebCore::UseCustomHeapCellType::No>(
+            vm,
+            [](auto& spaces) { return spaces.m_clientSubspaceForPostgresSQLDatabase.get(); },
+            [](auto& spaces, auto&& space) { spaces.m_clientSubspaceForPostgresSQLDatabase = WTFMove(space); },
+            [](auto& spaces) { return spaces.m_subspaceForPostgresSQLDatabase.get(); },
+            [](auto& spaces, auto&& space) { spaces.m_subspaceForPostgresSQLDatabase = WTFMove(space); });
+    }
+
+    static void destroy(JSC::JSCell*);
+    static JSC::Structure* createStructure(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::JSValue prototype)
+    {
+        return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(static_cast<JSC::JSType>(0b11101110), StructureFlags), info());
+    }
+
+    static JSObject* createPrototype(VM& vm, JSDOMGlobalObject* globalObject);
+    ;
+
+    ~JSPostgresSQLDatabase();
+
+    void* wrapped() const { return m_ctx; }
+
+    void detach()
+    {
+        m_ctx = nullptr;
+    }
+
+    static void analyzeHeap(JSCell*, JSC::HeapAnalyzer&);
+    static ptrdiff_t offsetOfWrapped() { return OBJECT_OFFSETOF(JSPostgresSQLDatabase, m_ctx); }
+
+    void* m_ctx { nullptr };
+
+    JSPostgresSQLDatabase(JSC::VM& vm, JSC::Structure* structure, void* sinkPtr)
+        : Base(vm, structure)
+    {
+        m_ctx = sinkPtr;
+        m_weakThis = JSC::Weak<JSPostgresSQLDatabase>(this, getOwner());
+    }
+
+    void finishCreation(JSC::VM&);
+
+    JSC::Weak<JSPostgresSQLDatabase> m_weakThis;
+
+    static bool hasPendingActivity(void* ctx);
+
+    class Owner final : public JSC::WeakHandleOwner {
+    public:
+        bool isReachableFromOpaqueRoots(JSC::Handle<JSC::Unknown> handle, void* context, JSC::AbstractSlotVisitor& visitor, const char** reason) final
+        {
+            auto* controller = JSC::jsCast<JSPostgresSQLDatabase*>(handle.slot()->asCell());
+            if (JSPostgresSQLDatabase::hasPendingActivity(controller->wrapped())) {
+                if (UNLIKELY(reason))
+                    *reason = "has pending activity";
+                return true;
+            }
+
+            return visitor.containsOpaqueRoot(context);
+        }
+        void finalize(JSC::Handle<JSC::Unknown>, void* context) final {}
+    };
+
+    static JSC::WeakHandleOwner* getOwner()
+    {
+        static NeverDestroyed<Owner> m_owner;
+        return &m_owner.get();
+    }
+
+    DECLARE_VISIT_CHILDREN;
+    template<typename Visitor> void visitAdditionalChildren(Visitor&);
+    DECLARE_VISIT_OUTPUT_CONSTRAINTS;
+
+    mutable JSC::WriteBarrier<JSC::Unknown> m_onClose;
+    mutable JSC::WriteBarrier<JSC::Unknown> m_onNotice;
+    mutable JSC::WriteBarrier<JSC::Unknown> m_onOpen;
+    mutable JSC::WriteBarrier<JSC::Unknown> m_onTimeout;
+    mutable JSC::WriteBarrier<JSC::Unknown> m_onDrain;
+};
+
 class JSExpect final : public JSC::JSDestructibleObject {
 public:
     using Base = JSC::JSDestructibleObject;

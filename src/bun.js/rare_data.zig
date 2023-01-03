@@ -25,6 +25,8 @@ cleanup_hook: ?*CleanupHook = null,
 
 file_polls_: ?*JSC.FilePoll.HiveArray = null,
 
+postgres_data: bun.JSC.API.Bun.PostgresData = .{},
+
 pub fn filePolls(this: *RareData, vm: *JSC.VirtualMachine) *JSC.FilePoll.HiveArray {
     return this.file_polls_ orelse {
         this.file_polls_ = vm.allocator.create(JSC.FilePoll.HiveArray) catch unreachable;

@@ -1593,6 +1593,15 @@ pub const ModuleLoader = struct {
                         .hash = 0,
                     };
                 },
+                .@"bun:sql" => {
+                    return ResolvedSource{
+                        .allocator = null,
+                        .source_code = ZigString.init(jsModuleFromFile(jsc_vm.load_builtins_from_path, "sql.exports.js")),
+                        .specifier = ZigString.init("bun:sql"),
+                        .source_url = ZigString.init("bun:sql"),
+                        .hash = 0,
+                    };
+                },
                 .@"node:fs" => {
                     if (comptime Environment.isDebug) {
                         return ResolvedSource{
@@ -1977,6 +1986,7 @@ pub const HardcodedModule = enum {
     @"bun:ffi",
     @"bun:jsc",
     @"bun:main",
+    @"bun:sql",
     @"bun:sqlite",
     @"detect-libc",
     @"node:assert",
@@ -2020,6 +2030,7 @@ pub const HardcodedModule = enum {
             .{ "bun:ffi", HardcodedModule.@"bun:ffi" },
             .{ "bun:jsc", HardcodedModule.@"bun:jsc" },
             .{ "bun:main", HardcodedModule.@"bun:main" },
+            .{ "bun:sql", HardcodedModule.@"bun:sql" },
             .{ "bun:sqlite", HardcodedModule.@"bun:sqlite" },
             .{ "depd", HardcodedModule.depd },
             .{ "detect-libc", HardcodedModule.@"detect-libc" },
@@ -2062,6 +2073,7 @@ pub const HardcodedModule = enum {
             .{ "bun", "bun" },
             .{ "bun:ffi", "bun:ffi" },
             .{ "bun:jsc", "bun:jsc" },
+            .{ "bun:sql", "bun:sql" },
             .{ "bun:sqlite", "bun:sqlite" },
             .{ "bun:wrap", "bun:wrap" },
             .{ "child_process", "node:child_process" },

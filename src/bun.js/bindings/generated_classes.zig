@@ -1970,6 +1970,185 @@ pub const JSMatchedRoute = struct {
         }
     }
 };
+pub const JSPostgresSQLDatabase = struct {
+    const PostgresSQLDatabase = Classes.PostgresSQLDatabase;
+    const GetterType = fn (*PostgresSQLDatabase, *JSC.JSGlobalObject) callconv(.C) JSC.JSValue;
+    const GetterTypeWithThisValue = fn (*PostgresSQLDatabase, JSC.JSValue, *JSC.JSGlobalObject) callconv(.C) JSC.JSValue;
+    const SetterType = fn (*PostgresSQLDatabase, *JSC.JSGlobalObject, JSC.JSValue) callconv(.C) bool;
+    const SetterTypeWithThisValue = fn (*PostgresSQLDatabase, JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) callconv(.C) bool;
+    const CallbackType = fn (*PostgresSQLDatabase, *JSC.JSGlobalObject, *JSC.CallFrame) callconv(.C) JSC.JSValue;
+
+    /// Return the pointer to the wrapped object.
+    /// If the object does not match the type, return null.
+    pub fn fromJS(value: JSC.JSValue) ?*PostgresSQLDatabase {
+        JSC.markBinding(@src());
+        return PostgresSQLDatabase__fromJS(value);
+    }
+
+    extern fn PostgresSQLDatabasePrototype__onCloseSetCachedValue(JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) void;
+
+    extern fn PostgresSQLDatabasePrototype__onCloseGetCachedValue(JSC.JSValue) JSC.JSValue;
+
+    /// `PostgresSQLDatabase.onClose` setter
+    /// This value will be visited by the garbage collector.
+    pub fn onCloseSetCached(thisValue: JSC.JSValue, globalObject: *JSC.JSGlobalObject, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        PostgresSQLDatabasePrototype__onCloseSetCachedValue(thisValue, globalObject, value);
+    }
+
+    /// `PostgresSQLDatabase.onClose` getter
+    /// This value will be visited by the garbage collector.
+    pub fn onCloseGetCached(thisValue: JSC.JSValue) ?JSC.JSValue {
+        JSC.markBinding(@src());
+        const result = PostgresSQLDatabasePrototype__onCloseGetCachedValue(thisValue);
+        if (result == .zero)
+            return null;
+
+        return result;
+    }
+
+    extern fn PostgresSQLDatabasePrototype__onNoticeSetCachedValue(JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) void;
+
+    extern fn PostgresSQLDatabasePrototype__onNoticeGetCachedValue(JSC.JSValue) JSC.JSValue;
+
+    /// `PostgresSQLDatabase.onNotice` setter
+    /// This value will be visited by the garbage collector.
+    pub fn onNoticeSetCached(thisValue: JSC.JSValue, globalObject: *JSC.JSGlobalObject, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        PostgresSQLDatabasePrototype__onNoticeSetCachedValue(thisValue, globalObject, value);
+    }
+
+    /// `PostgresSQLDatabase.onNotice` getter
+    /// This value will be visited by the garbage collector.
+    pub fn onNoticeGetCached(thisValue: JSC.JSValue) ?JSC.JSValue {
+        JSC.markBinding(@src());
+        const result = PostgresSQLDatabasePrototype__onNoticeGetCachedValue(thisValue);
+        if (result == .zero)
+            return null;
+
+        return result;
+    }
+
+    extern fn PostgresSQLDatabasePrototype__onOpenSetCachedValue(JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) void;
+
+    extern fn PostgresSQLDatabasePrototype__onOpenGetCachedValue(JSC.JSValue) JSC.JSValue;
+
+    /// `PostgresSQLDatabase.onOpen` setter
+    /// This value will be visited by the garbage collector.
+    pub fn onOpenSetCached(thisValue: JSC.JSValue, globalObject: *JSC.JSGlobalObject, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        PostgresSQLDatabasePrototype__onOpenSetCachedValue(thisValue, globalObject, value);
+    }
+
+    /// `PostgresSQLDatabase.onOpen` getter
+    /// This value will be visited by the garbage collector.
+    pub fn onOpenGetCached(thisValue: JSC.JSValue) ?JSC.JSValue {
+        JSC.markBinding(@src());
+        const result = PostgresSQLDatabasePrototype__onOpenGetCachedValue(thisValue);
+        if (result == .zero)
+            return null;
+
+        return result;
+    }
+
+    extern fn PostgresSQLDatabasePrototype__onTimeoutSetCachedValue(JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) void;
+
+    extern fn PostgresSQLDatabasePrototype__onTimeoutGetCachedValue(JSC.JSValue) JSC.JSValue;
+
+    /// `PostgresSQLDatabase.onTimeout` setter
+    /// This value will be visited by the garbage collector.
+    pub fn onTimeoutSetCached(thisValue: JSC.JSValue, globalObject: *JSC.JSGlobalObject, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        PostgresSQLDatabasePrototype__onTimeoutSetCachedValue(thisValue, globalObject, value);
+    }
+
+    /// `PostgresSQLDatabase.onTimeout` getter
+    /// This value will be visited by the garbage collector.
+    pub fn onTimeoutGetCached(thisValue: JSC.JSValue) ?JSC.JSValue {
+        JSC.markBinding(@src());
+        const result = PostgresSQLDatabasePrototype__onTimeoutGetCachedValue(thisValue);
+        if (result == .zero)
+            return null;
+
+        return result;
+    }
+
+    extern fn PostgresSQLDatabasePrototype__onDrainSetCachedValue(JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) void;
+
+    extern fn PostgresSQLDatabasePrototype__onDrainGetCachedValue(JSC.JSValue) JSC.JSValue;
+
+    /// `PostgresSQLDatabase.onDrain` setter
+    /// This value will be visited by the garbage collector.
+    pub fn onDrainSetCached(thisValue: JSC.JSValue, globalObject: *JSC.JSGlobalObject, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        PostgresSQLDatabasePrototype__onDrainSetCachedValue(thisValue, globalObject, value);
+    }
+
+    /// `PostgresSQLDatabase.onDrain` getter
+    /// This value will be visited by the garbage collector.
+    pub fn onDrainGetCached(thisValue: JSC.JSValue) ?JSC.JSValue {
+        JSC.markBinding(@src());
+        const result = PostgresSQLDatabasePrototype__onDrainGetCachedValue(thisValue);
+        if (result == .zero)
+            return null;
+
+        return result;
+    }
+
+    /// Create a new instance of PostgresSQLDatabase
+    pub fn toJS(this: *PostgresSQLDatabase, globalObject: *JSC.JSGlobalObject) JSC.JSValue {
+        JSC.markBinding(@src());
+        if (comptime Environment.allow_assert) {
+            const value__ = PostgresSQLDatabase__create(globalObject, this);
+            std.debug.assert(value__.as(PostgresSQLDatabase).? == this); // If this fails, likely a C ABI issue.
+            return value__;
+        } else {
+            return PostgresSQLDatabase__create(globalObject, this);
+        }
+    }
+
+    /// Modify the internal ptr to point to a new instance of PostgresSQLDatabase.
+    pub fn dangerouslySetPtr(value: JSC.JSValue, ptr: ?*PostgresSQLDatabase) bool {
+        JSC.markBinding(@src());
+        return PostgresSQLDatabase__dangerouslySetPtr(value, ptr);
+    }
+
+    /// Detach the ptr from the thisValue
+    pub fn detachPtr(_: *PostgresSQLDatabase, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        std.debug.assert(PostgresSQLDatabase__dangerouslySetPtr(value, null));
+    }
+
+    extern fn PostgresSQLDatabase__fromJS(JSC.JSValue) ?*PostgresSQLDatabase;
+    extern fn PostgresSQLDatabase__getConstructor(*JSC.JSGlobalObject) JSC.JSValue;
+
+    extern fn PostgresSQLDatabase__create(globalObject: *JSC.JSGlobalObject, ptr: ?*PostgresSQLDatabase) JSC.JSValue;
+
+    extern fn PostgresSQLDatabase__dangerouslySetPtr(JSC.JSValue, ?*PostgresSQLDatabase) bool;
+
+    comptime {
+        if (@TypeOf(PostgresSQLDatabase.finalize) != (fn (*PostgresSQLDatabase) callconv(.C) void)) {
+            @compileLog("PostgresSQLDatabase.finalize is not a finalizer");
+        }
+
+        if (@TypeOf(PostgresSQLDatabase.close) != CallbackType)
+            @compileLog("Expected PostgresSQLDatabase.close to be a callback but received " ++ @typeName(@TypeOf(PostgresSQLDatabase.close)));
+        if (@TypeOf(PostgresSQLDatabase.query) != CallbackType)
+            @compileLog("Expected PostgresSQLDatabase.query to be a callback but received " ++ @typeName(@TypeOf(PostgresSQLDatabase.query)));
+        if (@TypeOf(PostgresSQLDatabase.ref) != CallbackType)
+            @compileLog("Expected PostgresSQLDatabase.ref to be a callback but received " ++ @typeName(@TypeOf(PostgresSQLDatabase.ref)));
+        if (@TypeOf(PostgresSQLDatabase.unref) != CallbackType)
+            @compileLog("Expected PostgresSQLDatabase.unref to be a callback but received " ++ @typeName(@TypeOf(PostgresSQLDatabase.unref)));
+        if (!JSC.is_bindgen) {
+            @export(PostgresSQLDatabase.close, .{ .name = "PostgresSQLDatabasePrototype__close" });
+            @export(PostgresSQLDatabase.finalize, .{ .name = "PostgresSQLDatabaseClass__finalize" });
+            @export(PostgresSQLDatabase.hasPendingActivity, .{ .name = "PostgresSQLDatabase__hasPendingActivity" });
+            @export(PostgresSQLDatabase.query, .{ .name = "PostgresSQLDatabasePrototype__query" });
+            @export(PostgresSQLDatabase.ref, .{ .name = "PostgresSQLDatabasePrototype__ref" });
+            @export(PostgresSQLDatabase.unref, .{ .name = "PostgresSQLDatabasePrototype__unref" });
+        }
+    }
+};
 pub const JSExpect = struct {
     const Expect = Classes.Expect;
     const GetterType = fn (*Expect, *JSC.JSGlobalObject) callconv(.C) JSC.JSValue;
@@ -3306,6 +3485,7 @@ comptime {
     _ = JSServerWebSocket;
     _ = JSFileSystemRouter;
     _ = JSMatchedRoute;
+    _ = JSPostgresSQLDatabase;
     _ = JSExpect;
     _ = JSTextDecoder;
     _ = JSRequest;

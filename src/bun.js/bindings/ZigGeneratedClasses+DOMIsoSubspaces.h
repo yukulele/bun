@@ -14,6 +14,7 @@ std::unique_ptr<IsoSubspace> m_subspaceForSHA512_256Constructor;std::unique_ptr<
 std::unique_ptr<IsoSubspace> m_subspaceForCryptoHasherConstructor;std::unique_ptr<IsoSubspace> m_subspaceForServerWebSocket;
 std::unique_ptr<IsoSubspace> m_subspaceForServerWebSocketConstructor;std::unique_ptr<IsoSubspace> m_subspaceForFileSystemRouter;
 std::unique_ptr<IsoSubspace> m_subspaceForFileSystemRouterConstructor;std::unique_ptr<IsoSubspace> m_subspaceForMatchedRoute;
+std::unique_ptr<IsoSubspace> m_subspaceForPostgresSQLDatabase;
 std::unique_ptr<IsoSubspace> m_subspaceForExpect;
 std::unique_ptr<IsoSubspace> m_subspaceForExpectConstructor;std::unique_ptr<IsoSubspace> m_subspaceForTextDecoder;
 std::unique_ptr<IsoSubspace> m_subspaceForTextDecoderConstructor;std::unique_ptr<IsoSubspace> m_subspaceForRequest;

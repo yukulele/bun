@@ -2030,7 +2030,7 @@ pub const JSGlobalObject = extern struct {
     }
 
     pub fn createErrorInstance(this: *JSGlobalObject, comptime fmt: string, args: anytype) JSValue {
-        if (comptime std.meta.fieldNames(@TypeOf(args)).len > 0) {
+        if (comptime std.meta.fields(@TypeOf(args)).len > 0) {
             var stack_fallback = std.heap.stackFallback(1024 * 4, this.allocator());
             var buf = bun.MutableString.init2048(stack_fallback.get()) catch unreachable;
             defer buf.deinit();
@@ -2077,11 +2077,19 @@ pub const JSGlobalObject = extern struct {
         err: anyerror,
         comptime fmt: string,
     ) void {
-        var str = ZigString.init(std.fmt.allocPrint(this.bunVM().allocator, "{s} " ++ fmt, .{@errorName(err)}) catch return);
+        this.vm().throwError(this, this.createError(err, fmt));
+    }
+
+    pub fn createError(
+        this: *JSGlobalObject,
+        err: anyerror,
+        comptime fmt: string,
+    ) JSValue {
+        var str = ZigString.init(std.fmt.allocPrint(this.bunVM().allocator, "{s} " ++ fmt, .{@errorName(err)}) catch return ZigString.static("error").toErrorInstance(this));
         str.markUTF8();
-        var err_value = str.toErrorInstance(this);
-        this.vm().throwError(this, err_value);
+        const instance = str.toErrorInstance(this);
         this.bunVM().allocator.free(ZigString.untagged(str.ptr)[0..str.len]);
+        return instance;
     }
 
     pub fn handleError(

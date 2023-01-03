@@ -756,3 +756,6 @@ pub fn enumMap(comptime T: type, comptime args: anytype) (fn (T) []const u8) {
 
     return Map.get;
 }
+
+pub const url = @import("./url.zig");
+pub const URL = url.URL;

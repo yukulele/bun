@@ -39,10 +39,7 @@ pub fn NewSocketHandler(comptime ssl: bool) type {
             return @ptrCast(*NativeSocketHandleType(ssl), us_socket_get_native_handle(comptime ssl_int, this.socket).?);
         }
         pub fn ext(this: ThisSocket, comptime ContextType: type) ?*ContextType {
-            const alignment = if (ContextType == *anyopaque)
-                @sizeOf(usize)
-            else
-                std.meta.alignment(ContextType);
+            const alignment = @sizeOf(usize);
 
             var ptr = us_socket_ext(
                 comptime ssl_int,

@@ -6243,6 +6243,322 @@ void JSMatchedRoute::visitOutputConstraintsImpl(JSCell* cell, Visitor& visitor)
 }
 
 DEFINE_VISIT_OUTPUT_CONSTRAINTS(JSMatchedRoute);
+class JSPostgresSQLDatabasePrototype final : public JSC::JSNonFinalObject {
+public:
+    using Base = JSC::JSNonFinalObject;
+
+    static JSPostgresSQLDatabasePrototype* create(JSC::VM& vm, JSGlobalObject* globalObject, JSC::Structure* structure)
+    {
+        JSPostgresSQLDatabasePrototype* ptr = new (NotNull, JSC::allocateCell<JSPostgresSQLDatabasePrototype>(vm)) JSPostgresSQLDatabasePrototype(vm, globalObject, structure);
+        ptr->finishCreation(vm, globalObject);
+        return ptr;
+    }
+
+    DECLARE_INFO;
+    template<typename CellType, JSC::SubspaceAccess>
+    static JSC::GCClient::IsoSubspace* subspaceFor(JSC::VM& vm)
+    {
+        return &vm.plainObjectSpace();
+    }
+    static JSC::Structure* createStructure(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::JSValue prototype)
+    {
+        return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), info());
+    }
+
+private:
+    JSPostgresSQLDatabasePrototype(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure)
+        : Base(vm, structure)
+    {
+    }
+
+    void finishCreation(JSC::VM&, JSC::JSGlobalObject*);
+};
+
+extern "C" void PostgresSQLDatabaseClass__finalize(void*);
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__close(void* ptr, JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame);
+JSC_DECLARE_HOST_FUNCTION(PostgresSQLDatabasePrototype__closeCallback);
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__query(void* ptr, JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame);
+JSC_DECLARE_HOST_FUNCTION(PostgresSQLDatabasePrototype__queryCallback);
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__ref(void* ptr, JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame);
+JSC_DECLARE_HOST_FUNCTION(PostgresSQLDatabasePrototype__refCallback);
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__unref(void* ptr, JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame);
+JSC_DECLARE_HOST_FUNCTION(PostgresSQLDatabasePrototype__unrefCallback);
+
+STATIC_ASSERT_ISO_SUBSPACE_SHARABLE(JSPostgresSQLDatabasePrototype, JSPostgresSQLDatabasePrototype::Base);
+
+static const HashTableValue JSPostgresSQLDatabasePrototypeTableValues[] = {
+    { "close"_s, static_cast<unsigned>(JSC::PropertyAttribute::Function), NoIntrinsic, { HashTableValue::NativeFunctionType, PostgresSQLDatabasePrototype__closeCallback, 0 } },
+    { "query"_s, static_cast<unsigned>(JSC::PropertyAttribute::Function), NoIntrinsic, { HashTableValue::NativeFunctionType, PostgresSQLDatabasePrototype__queryCallback, 4 } },
+    { "ref"_s, static_cast<unsigned>(JSC::PropertyAttribute::Function), NoIntrinsic, { HashTableValue::NativeFunctionType, PostgresSQLDatabasePrototype__refCallback, 0 } },
+    { "unref"_s, static_cast<unsigned>(JSC::PropertyAttribute::Function), NoIntrinsic, { HashTableValue::NativeFunctionType, PostgresSQLDatabasePrototype__unrefCallback, 0 } }
+};
+
+const ClassInfo JSPostgresSQLDatabasePrototype::s_info = { "PostgresSQLDatabase"_s, &Base::s_info, nullptr, nullptr, CREATE_METHOD_TABLE(JSPostgresSQLDatabasePrototype) };
+
+JSC_DEFINE_HOST_FUNCTION(PostgresSQLDatabasePrototype__closeCallback, (JSGlobalObject * lexicalGlobalObject, CallFrame* callFrame))
+{
+    auto& vm = lexicalGlobalObject->vm();
+
+    JSPostgresSQLDatabase* thisObject = jsDynamicCast<JSPostgresSQLDatabase*>(callFrame->thisValue());
+
+    if (UNLIKELY(!thisObject)) {
+        auto throwScope = DECLARE_THROW_SCOPE(vm);
+        return throwVMTypeError(lexicalGlobalObject, throwScope);
+    }
+
+    JSC::EnsureStillAliveScope thisArg = JSC::EnsureStillAliveScope(thisObject);
+
+    return PostgresSQLDatabasePrototype__close(thisObject->wrapped(), lexicalGlobalObject, callFrame);
+}
+
+JSC_DEFINE_HOST_FUNCTION(PostgresSQLDatabasePrototype__queryCallback, (JSGlobalObject * lexicalGlobalObject, CallFrame* callFrame))
+{
+    auto& vm = lexicalGlobalObject->vm();
+
+    JSPostgresSQLDatabase* thisObject = jsDynamicCast<JSPostgresSQLDatabase*>(callFrame->thisValue());
+
+    if (UNLIKELY(!thisObject)) {
+        auto throwScope = DECLARE_THROW_SCOPE(vm);
+        return throwVMTypeError(lexicalGlobalObject, throwScope);
+    }
+
+    JSC::EnsureStillAliveScope thisArg = JSC::EnsureStillAliveScope(thisObject);
+
+    return PostgresSQLDatabasePrototype__query(thisObject->wrapped(), lexicalGlobalObject, callFrame);
+}
+
+JSC_DEFINE_HOST_FUNCTION(PostgresSQLDatabasePrototype__refCallback, (JSGlobalObject * lexicalGlobalObject, CallFrame* callFrame))
+{
+    auto& vm = lexicalGlobalObject->vm();
+
+    JSPostgresSQLDatabase* thisObject = jsDynamicCast<JSPostgresSQLDatabase*>(callFrame->thisValue());
+
+    if (UNLIKELY(!thisObject)) {
+        auto throwScope = DECLARE_THROW_SCOPE(vm);
+        return throwVMTypeError(lexicalGlobalObject, throwScope);
+    }
+
+    JSC::EnsureStillAliveScope thisArg = JSC::EnsureStillAliveScope(thisObject);
+
+    return PostgresSQLDatabasePrototype__ref(thisObject->wrapped(), lexicalGlobalObject, callFrame);
+}
+
+JSC_DEFINE_HOST_FUNCTION(PostgresSQLDatabasePrototype__unrefCallback, (JSGlobalObject * lexicalGlobalObject, CallFrame* callFrame))
+{
+    auto& vm = lexicalGlobalObject->vm();
+
+    JSPostgresSQLDatabase* thisObject = jsDynamicCast<JSPostgresSQLDatabase*>(callFrame->thisValue());
+
+    if (UNLIKELY(!thisObject)) {
+        auto throwScope = DECLARE_THROW_SCOPE(vm);
+        return throwVMTypeError(lexicalGlobalObject, throwScope);
+    }
+
+    JSC::EnsureStillAliveScope thisArg = JSC::EnsureStillAliveScope(thisObject);
+
+    return PostgresSQLDatabasePrototype__unref(thisObject->wrapped(), lexicalGlobalObject, callFrame);
+}
+
+extern "C" void PostgresSQLDatabasePrototype__onCloseSetCachedValue(JSC::EncodedJSValue thisValue, JSC::JSGlobalObject* globalObject, JSC::EncodedJSValue value)
+{
+    auto& vm = globalObject->vm();
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    thisObject->m_onClose.set(vm, thisObject, JSValue::decode(value));
+}
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__onCloseGetCachedValue(JSC::EncodedJSValue thisValue)
+{
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    return JSValue::encode(thisObject->m_onClose.get());
+}
+
+extern "C" void PostgresSQLDatabasePrototype__onNoticeSetCachedValue(JSC::EncodedJSValue thisValue, JSC::JSGlobalObject* globalObject, JSC::EncodedJSValue value)
+{
+    auto& vm = globalObject->vm();
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    thisObject->m_onNotice.set(vm, thisObject, JSValue::decode(value));
+}
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__onNoticeGetCachedValue(JSC::EncodedJSValue thisValue)
+{
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    return JSValue::encode(thisObject->m_onNotice.get());
+}
+
+extern "C" void PostgresSQLDatabasePrototype__onOpenSetCachedValue(JSC::EncodedJSValue thisValue, JSC::JSGlobalObject* globalObject, JSC::EncodedJSValue value)
+{
+    auto& vm = globalObject->vm();
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    thisObject->m_onOpen.set(vm, thisObject, JSValue::decode(value));
+}
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__onOpenGetCachedValue(JSC::EncodedJSValue thisValue)
+{
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    return JSValue::encode(thisObject->m_onOpen.get());
+}
+
+extern "C" void PostgresSQLDatabasePrototype__onTimeoutSetCachedValue(JSC::EncodedJSValue thisValue, JSC::JSGlobalObject* globalObject, JSC::EncodedJSValue value)
+{
+    auto& vm = globalObject->vm();
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    thisObject->m_onTimeout.set(vm, thisObject, JSValue::decode(value));
+}
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__onTimeoutGetCachedValue(JSC::EncodedJSValue thisValue)
+{
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    return JSValue::encode(thisObject->m_onTimeout.get());
+}
+
+extern "C" void PostgresSQLDatabasePrototype__onDrainSetCachedValue(JSC::EncodedJSValue thisValue, JSC::JSGlobalObject* globalObject, JSC::EncodedJSValue value)
+{
+    auto& vm = globalObject->vm();
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    thisObject->m_onDrain.set(vm, thisObject, JSValue::decode(value));
+}
+
+extern "C" EncodedJSValue PostgresSQLDatabasePrototype__onDrainGetCachedValue(JSC::EncodedJSValue thisValue)
+{
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(JSValue::decode(thisValue));
+    return JSValue::encode(thisObject->m_onDrain.get());
+}
+
+void JSPostgresSQLDatabasePrototype::finishCreation(JSC::VM& vm, JSC::JSGlobalObject* globalObject)
+{
+    Base::finishCreation(vm);
+    reifyStaticProperties(vm, JSPostgresSQLDatabase::info(), JSPostgresSQLDatabasePrototypeTableValues, *this);
+    JSC_TO_STRING_TAG_WITHOUT_TRANSITION();
+}
+
+extern "C" bool PostgresSQLDatabase__hasPendingActivity(void* ptr);
+bool JSPostgresSQLDatabase::hasPendingActivity(void* ctx)
+{
+    return PostgresSQLDatabase__hasPendingActivity(ctx);
+}
+
+JSPostgresSQLDatabase::~JSPostgresSQLDatabase()
+{
+    if (m_ctx) {
+        PostgresSQLDatabaseClass__finalize(m_ctx);
+    }
+}
+void JSPostgresSQLDatabase::destroy(JSCell* cell)
+{
+    static_cast<JSPostgresSQLDatabase*>(cell)->JSPostgresSQLDatabase::~JSPostgresSQLDatabase();
+}
+
+const ClassInfo JSPostgresSQLDatabase::s_info = { "PostgresSQLDatabase"_s, &Base::s_info, nullptr, nullptr, CREATE_METHOD_TABLE(JSPostgresSQLDatabase) };
+
+void JSPostgresSQLDatabase::finishCreation(VM& vm)
+{
+    Base::finishCreation(vm);
+    ASSERT(inherits(info()));
+}
+
+JSPostgresSQLDatabase* JSPostgresSQLDatabase::create(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure, void* ctx)
+{
+    JSPostgresSQLDatabase* ptr = new (NotNull, JSC::allocateCell<JSPostgresSQLDatabase>(vm)) JSPostgresSQLDatabase(vm, structure, ctx);
+    ptr->finishCreation(vm);
+    return ptr;
+}
+
+extern "C" void* PostgresSQLDatabase__fromJS(JSC::EncodedJSValue value)
+{
+    JSC::JSValue decodedValue = JSC::JSValue::decode(value);
+    if (!decodedValue || decodedValue.isUndefinedOrNull())
+        return nullptr;
+
+    JSPostgresSQLDatabase* object = JSC::jsDynamicCast<JSPostgresSQLDatabase*>(decodedValue);
+
+    if (!object)
+        return nullptr;
+
+    return object->wrapped();
+}
+
+extern "C" bool PostgresSQLDatabase__dangerouslySetPtr(JSC::EncodedJSValue value, void* ptr)
+{
+    JSPostgresSQLDatabase* object = JSC::jsDynamicCast<JSPostgresSQLDatabase*>(JSValue::decode(value));
+    if (!object)
+        return false;
+
+    object->m_ctx = ptr;
+    return true;
+}
+
+extern "C" const size_t PostgresSQLDatabase__ptrOffset = JSPostgresSQLDatabase::offsetOfWrapped();
+
+void JSPostgresSQLDatabase::analyzeHeap(JSCell* cell, HeapAnalyzer& analyzer)
+{
+    auto* thisObject = jsCast<JSPostgresSQLDatabase*>(cell);
+    if (void* wrapped = thisObject->wrapped()) {
+        // if (thisObject->scriptExecutionContext())
+        //     analyzer.setLabelForCell(cell, "url " + thisObject->scriptExecutionContext()->url().string());
+    }
+    Base::analyzeHeap(cell, analyzer);
+}
+
+JSObject* JSPostgresSQLDatabase::createPrototype(VM& vm, JSDOMGlobalObject* globalObject)
+{
+    return JSPostgresSQLDatabasePrototype::create(vm, globalObject, JSPostgresSQLDatabasePrototype::createStructure(vm, globalObject, globalObject->objectPrototype()));
+}
+
+extern "C" EncodedJSValue PostgresSQLDatabase__create(Zig::GlobalObject* globalObject, void* ptr)
+{
+    auto& vm = globalObject->vm();
+    JSC::Structure* structure = globalObject->JSPostgresSQLDatabaseStructure();
+    JSPostgresSQLDatabase* instance = JSPostgresSQLDatabase::create(vm, globalObject, structure, ptr);
+
+    return JSValue::encode(instance);
+}
+
+template<typename Visitor>
+void JSPostgresSQLDatabase::visitChildrenImpl(JSCell* cell, Visitor& visitor)
+{
+    JSPostgresSQLDatabase* thisObject = jsCast<JSPostgresSQLDatabase*>(cell);
+    ASSERT_GC_OBJECT_INHERITS(thisObject, info());
+    Base::visitChildren(thisObject, visitor);
+    visitor.append(thisObject->m_onClose);
+    visitor.append(thisObject->m_onNotice);
+    visitor.append(thisObject->m_onOpen);
+    visitor.append(thisObject->m_onTimeout);
+    visitor.append(thisObject->m_onDrain);
+
+    visitor.addOpaqueRoot(thisObject->wrapped());
+}
+
+DEFINE_VISIT_CHILDREN(JSPostgresSQLDatabase);
+
+template<typename Visitor>
+void JSPostgresSQLDatabase::visitAdditionalChildren(Visitor& visitor)
+{
+    JSPostgresSQLDatabase* thisObject = this;
+    ASSERT_GC_OBJECT_INHERITS(thisObject, info());
+    visitor.append(thisObject->m_onClose);
+    visitor.append(thisObject->m_onNotice);
+    visitor.append(thisObject->m_onOpen);
+    visitor.append(thisObject->m_onTimeout);
+    visitor.append(thisObject->m_onDrain);
+
+    visitor.addOpaqueRoot(this->wrapped());
+}
+
+DEFINE_VISIT_ADDITIONAL_CHILDREN(JSPostgresSQLDatabase);
+
+template<typename Visitor>
+void JSPostgresSQLDatabase::visitOutputConstraintsImpl(JSCell* cell, Visitor& visitor)
+{
+    JSPostgresSQLDatabase* thisObject = jsCast<JSPostgresSQLDatabase*>(cell);
+    ASSERT_GC_OBJECT_INHERITS(thisObject, info());
+    thisObject->visitAdditionalChildren<Visitor>(visitor);
+}
+
+DEFINE_VISIT_OUTPUT_CONSTRAINTS(JSPostgresSQLDatabase);
 class JSExpectPrototype final : public JSC::JSNonFinalObject {
 public:
     using Base = JSC::JSNonFinalObject;
