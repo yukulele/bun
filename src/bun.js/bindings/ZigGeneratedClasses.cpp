@@ -10976,6 +10976,312 @@ void JSFileSystemRouter::visitOutputConstraintsImpl(JSCell* cell, Visitor& visit
 }
 
 DEFINE_VISIT_OUTPUT_CONSTRAINTS(JSFileSystemRouter);
+class JSH2FrameParserPrototype final : public JSC::JSNonFinalObject {
+public:
+    using Base = JSC::JSNonFinalObject;
+
+    static JSH2FrameParserPrototype* create(JSC::VM& vm, JSGlobalObject* globalObject, JSC::Structure* structure)
+    {
+        JSH2FrameParserPrototype* ptr = new (NotNull, JSC::allocateCell<JSH2FrameParserPrototype>(vm)) JSH2FrameParserPrototype(vm, globalObject, structure);
+        ptr->finishCreation(vm, globalObject);
+        return ptr;
+    }
+
+    DECLARE_INFO;
+    template<typename CellType, JSC::SubspaceAccess>
+    static JSC::GCClient::IsoSubspace* subspaceFor(JSC::VM& vm)
+    {
+        return &vm.plainObjectSpace();
+    }
+    static JSC::Structure* createStructure(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::JSValue prototype)
+    {
+        return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(JSC::ObjectType, StructureFlags), info());
+    }
+
+private:
+    JSH2FrameParserPrototype(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure)
+        : Base(vm, structure)
+    {
+    }
+
+    void finishCreation(JSC::VM&, JSC::JSGlobalObject*);
+};
+
+class JSH2FrameParserConstructor final : public JSC::InternalFunction {
+public:
+    using Base = JSC::InternalFunction;
+    static JSH2FrameParserConstructor* create(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure, JSH2FrameParserPrototype* prototype);
+
+    static constexpr unsigned StructureFlags = Base::StructureFlags;
+    static constexpr bool needsDestruction = false;
+
+    static JSC::Structure* createStructure(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::JSValue prototype)
+    {
+        return JSC::Structure::create(vm, globalObject, prototype, JSC::TypeInfo(JSC::InternalFunctionType, StructureFlags), info());
+    }
+
+    template<typename, JSC::SubspaceAccess mode> static JSC::GCClient::IsoSubspace* subspaceFor(JSC::VM& vm)
+    {
+        if constexpr (mode == JSC::SubspaceAccess::Concurrently)
+            return nullptr;
+        return WebCore::subspaceForImpl<JSH2FrameParserConstructor, WebCore::UseCustomHeapCellType::No>(
+            vm,
+            [](auto& spaces) { return spaces.m_clientSubspaceForH2FrameParserConstructor.get(); },
+            [](auto& spaces, auto&& space) { spaces.m_clientSubspaceForH2FrameParserConstructor = std::forward<decltype(space)>(space); },
+            [](auto& spaces) { return spaces.m_subspaceForH2FrameParserConstructor.get(); },
+            [](auto& spaces, auto&& space) { spaces.m_subspaceForH2FrameParserConstructor = std::forward<decltype(space)>(space); });
+    }
+
+    void initializeProperties(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSH2FrameParserPrototype* prototype);
+
+    // Must be defined for each specialization class.
+    static JSC::EncodedJSValue JSC_HOST_CALL_ATTRIBUTES construct(JSC::JSGlobalObject*, JSC::CallFrame*);
+
+    DECLARE_EXPORT_INFO;
+
+private:
+    JSH2FrameParserConstructor(JSC::VM& vm, JSC::Structure* structure);
+    void finishCreation(JSC::VM&, JSC::JSGlobalObject* globalObject, JSH2FrameParserPrototype* prototype);
+};
+
+extern "C" void* H2FrameParserClass__construct(JSC::JSGlobalObject*, JSC::CallFrame*);
+JSC_DECLARE_CUSTOM_GETTER(jsH2FrameParserConstructor);
+
+extern "C" void H2FrameParserClass__finalize(void*);
+
+extern "C" EncodedJSValue H2FrameParserPrototype__detach(void* ptr, JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame);
+JSC_DECLARE_HOST_FUNCTION(H2FrameParserPrototype__detachCallback);
+
+extern "C" EncodedJSValue H2FrameParserPrototype__read(void* ptr, JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame);
+JSC_DECLARE_HOST_FUNCTION(H2FrameParserPrototype__readCallback);
+
+STATIC_ASSERT_ISO_SUBSPACE_SHARABLE(JSH2FrameParserPrototype, JSH2FrameParserPrototype::Base);
+
+static const HashTableValue JSH2FrameParserPrototypeTableValues[] = {
+    { "detach"_s, static_cast<unsigned>(JSC::PropertyAttribute::Function | PropertyAttribute::DontDelete), NoIntrinsic, { HashTableValue::NativeFunctionType, H2FrameParserPrototype__detachCallback, 0 } },
+    { "read"_s, static_cast<unsigned>(JSC::PropertyAttribute::Function | PropertyAttribute::DontDelete), NoIntrinsic, { HashTableValue::NativeFunctionType, H2FrameParserPrototype__readCallback, 1 } }
+};
+
+const ClassInfo JSH2FrameParserPrototype::s_info = { "H2FrameParser"_s, &Base::s_info, nullptr, nullptr, CREATE_METHOD_TABLE(JSH2FrameParserPrototype) };
+
+JSC_DEFINE_CUSTOM_GETTER(jsH2FrameParserConstructor, (JSGlobalObject * lexicalGlobalObject, EncodedJSValue thisValue, PropertyName))
+{
+    VM& vm = JSC::getVM(lexicalGlobalObject);
+    auto throwScope = DECLARE_THROW_SCOPE(vm);
+    auto* globalObject = reinterpret_cast<Zig::GlobalObject*>(lexicalGlobalObject);
+    auto* prototype = jsDynamicCast<JSH2FrameParserPrototype*>(JSValue::decode(thisValue));
+
+    if (UNLIKELY(!prototype))
+        return throwVMTypeError(lexicalGlobalObject, throwScope, "Cannot get constructor for H2FrameParser"_s);
+    return JSValue::encode(globalObject->JSH2FrameParserConstructor());
+}
+
+JSC_DEFINE_HOST_FUNCTION(H2FrameParserPrototype__detachCallback, (JSGlobalObject * lexicalGlobalObject, CallFrame* callFrame))
+{
+    auto& vm = lexicalGlobalObject->vm();
+
+    JSH2FrameParser* thisObject = jsDynamicCast<JSH2FrameParser*>(callFrame->thisValue());
+
+    if (UNLIKELY(!thisObject)) {
+        auto throwScope = DECLARE_THROW_SCOPE(vm);
+        throwVMTypeError(lexicalGlobalObject, throwScope, "Expected 'this' to be instanceof H2FrameParser"_s);
+        return JSValue::encode({});
+    }
+
+    JSC::EnsureStillAliveScope thisArg = JSC::EnsureStillAliveScope(thisObject);
+
+#ifdef BUN_DEBUG
+    /** View the file name of the JS file that called this function
+     * from a debugger */
+    SourceOrigin sourceOrigin = callFrame->callerSourceOrigin(vm);
+    const char* fileName = sourceOrigin.string().utf8().data();
+    static const char* lastFileName = nullptr;
+    if (lastFileName != fileName) {
+        lastFileName = fileName;
+    }
+#endif
+
+    return H2FrameParserPrototype__detach(thisObject->wrapped(), lexicalGlobalObject, callFrame);
+}
+
+JSC_DEFINE_HOST_FUNCTION(H2FrameParserPrototype__readCallback, (JSGlobalObject * lexicalGlobalObject, CallFrame* callFrame))
+{
+    auto& vm = lexicalGlobalObject->vm();
+
+    JSH2FrameParser* thisObject = jsDynamicCast<JSH2FrameParser*>(callFrame->thisValue());
+
+    if (UNLIKELY(!thisObject)) {
+        auto throwScope = DECLARE_THROW_SCOPE(vm);
+        throwVMTypeError(lexicalGlobalObject, throwScope, "Expected 'this' to be instanceof H2FrameParser"_s);
+        return JSValue::encode({});
+    }
+
+    JSC::EnsureStillAliveScope thisArg = JSC::EnsureStillAliveScope(thisObject);
+
+#ifdef BUN_DEBUG
+    /** View the file name of the JS file that called this function
+     * from a debugger */
+    SourceOrigin sourceOrigin = callFrame->callerSourceOrigin(vm);
+    const char* fileName = sourceOrigin.string().utf8().data();
+    static const char* lastFileName = nullptr;
+    if (lastFileName != fileName) {
+        lastFileName = fileName;
+    }
+#endif
+
+    return H2FrameParserPrototype__read(thisObject->wrapped(), lexicalGlobalObject, callFrame);
+}
+
+void JSH2FrameParserPrototype::finishCreation(JSC::VM& vm, JSC::JSGlobalObject* globalObject)
+{
+    Base::finishCreation(vm);
+    reifyStaticProperties(vm, JSH2FrameParser::info(), JSH2FrameParserPrototypeTableValues, *this);
+    JSC_TO_STRING_TAG_WITHOUT_TRANSITION();
+}
+
+void JSH2FrameParserConstructor::finishCreation(VM& vm, JSC::JSGlobalObject* globalObject, JSH2FrameParserPrototype* prototype)
+{
+    Base::finishCreation(vm, 0, "H2FrameParser"_s, PropertyAdditionMode::WithoutStructureTransition);
+
+    putDirectWithoutTransition(vm, vm.propertyNames->prototype, prototype, PropertyAttribute::DontEnum | PropertyAttribute::DontDelete | PropertyAttribute::ReadOnly);
+    ASSERT(inherits(info()));
+}
+
+JSH2FrameParserConstructor::JSH2FrameParserConstructor(JSC::VM& vm, JSC::Structure* structure)
+    : Base(vm, structure, construct, construct)
+{
+}
+
+JSH2FrameParserConstructor* JSH2FrameParserConstructor::create(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure, JSH2FrameParserPrototype* prototype)
+{
+    JSH2FrameParserConstructor* ptr = new (NotNull, JSC::allocateCell<JSH2FrameParserConstructor>(vm)) JSH2FrameParserConstructor(vm, structure);
+    ptr->finishCreation(vm, globalObject, prototype);
+    return ptr;
+}
+
+JSC::EncodedJSValue JSC_HOST_CALL_ATTRIBUTES JSH2FrameParserConstructor::construct(JSC::JSGlobalObject* lexicalGlobalObject, JSC::CallFrame* callFrame)
+{
+    Zig::GlobalObject* globalObject = reinterpret_cast<Zig::GlobalObject*>(lexicalGlobalObject);
+    JSC::VM& vm = globalObject->vm();
+    JSObject* newTarget = asObject(callFrame->newTarget());
+    auto* constructor = globalObject->JSH2FrameParserConstructor();
+    Structure* structure = globalObject->JSH2FrameParserStructure();
+    if (constructor != newTarget) {
+        auto scope = DECLARE_THROW_SCOPE(vm);
+
+        auto* functionGlobalObject = reinterpret_cast<Zig::GlobalObject*>(
+            // ShadowRealm functions belong to a different global object.
+            getFunctionRealm(globalObject, newTarget));
+        RETURN_IF_EXCEPTION(scope, {});
+        structure = InternalFunction::createSubclassStructure(
+            globalObject,
+            newTarget,
+            functionGlobalObject->JSH2FrameParserStructure());
+    }
+
+    void* ptr = H2FrameParserClass__construct(globalObject, callFrame);
+
+    if (UNLIKELY(!ptr)) {
+        return JSValue::encode(JSC::jsUndefined());
+    }
+
+    JSH2FrameParser* instance = JSH2FrameParser::create(vm, globalObject, structure, ptr);
+
+    return JSValue::encode(instance);
+}
+
+void JSH2FrameParserConstructor::initializeProperties(VM& vm, JSC::JSGlobalObject* globalObject, JSH2FrameParserPrototype* prototype)
+{
+}
+
+const ClassInfo JSH2FrameParserConstructor::s_info = { "Function"_s, &Base::s_info, nullptr, nullptr, CREATE_METHOD_TABLE(JSH2FrameParserConstructor) };
+
+extern "C" EncodedJSValue H2FrameParser__getConstructor(Zig::GlobalObject* globalObject)
+{
+    return JSValue::encode(globalObject->JSH2FrameParserConstructor());
+}
+
+JSH2FrameParser::~JSH2FrameParser()
+{
+    if (m_ctx) {
+        H2FrameParserClass__finalize(m_ctx);
+    }
+}
+void JSH2FrameParser::destroy(JSCell* cell)
+{
+    static_cast<JSH2FrameParser*>(cell)->JSH2FrameParser::~JSH2FrameParser();
+}
+
+const ClassInfo JSH2FrameParser::s_info = { "H2FrameParser"_s, &Base::s_info, nullptr, nullptr, CREATE_METHOD_TABLE(JSH2FrameParser) };
+
+void JSH2FrameParser::finishCreation(VM& vm)
+{
+    Base::finishCreation(vm);
+    ASSERT(inherits(info()));
+}
+
+JSH2FrameParser* JSH2FrameParser::create(JSC::VM& vm, JSC::JSGlobalObject* globalObject, JSC::Structure* structure, void* ctx)
+{
+    JSH2FrameParser* ptr = new (NotNull, JSC::allocateCell<JSH2FrameParser>(vm)) JSH2FrameParser(vm, structure, ctx);
+    ptr->finishCreation(vm);
+    return ptr;
+}
+
+extern "C" void* H2FrameParser__fromJS(JSC::EncodedJSValue value)
+{
+    JSC::JSValue decodedValue = JSC::JSValue::decode(value);
+    if (decodedValue.isEmpty() || !decodedValue.isCell())
+        return nullptr;
+
+    JSC::JSCell* cell = decodedValue.asCell();
+    JSH2FrameParser* object = JSC::jsDynamicCast<JSH2FrameParser*>(cell);
+
+    if (!object)
+        return nullptr;
+
+    return object->wrapped();
+}
+
+extern "C" bool H2FrameParser__dangerouslySetPtr(JSC::EncodedJSValue value, void* ptr)
+{
+    JSH2FrameParser* object = JSC::jsDynamicCast<JSH2FrameParser*>(JSValue::decode(value));
+    if (!object)
+        return false;
+
+    object->m_ctx = ptr;
+    return true;
+}
+
+extern "C" const size_t H2FrameParser__ptrOffset = JSH2FrameParser::offsetOfWrapped();
+
+void JSH2FrameParser::analyzeHeap(JSCell* cell, HeapAnalyzer& analyzer)
+{
+    auto* thisObject = jsCast<JSH2FrameParser*>(cell);
+    if (void* wrapped = thisObject->wrapped()) {
+        // if (thisObject->scriptExecutionContext())
+        //     analyzer.setLabelForCell(cell, "url " + thisObject->scriptExecutionContext()->url().string());
+    }
+    Base::analyzeHeap(cell, analyzer);
+}
+
+JSObject* JSH2FrameParser::createConstructor(VM& vm, JSGlobalObject* globalObject, JSValue prototype)
+{
+    return WebCore::JSH2FrameParserConstructor::create(vm, globalObject, WebCore::JSH2FrameParserConstructor::createStructure(vm, globalObject, globalObject->functionPrototype()), jsCast<WebCore::JSH2FrameParserPrototype*>(prototype));
+}
+
+JSObject* JSH2FrameParser::createPrototype(VM& vm, JSDOMGlobalObject* globalObject)
+{
+    return JSH2FrameParserPrototype::create(vm, globalObject, JSH2FrameParserPrototype::createStructure(vm, globalObject, globalObject->objectPrototype()));
+}
+
+extern "C" EncodedJSValue H2FrameParser__create(Zig::GlobalObject* globalObject, void* ptr)
+{
+    auto& vm = globalObject->vm();
+    JSC::Structure* structure = globalObject->JSH2FrameParserStructure();
+    JSH2FrameParser* instance = JSH2FrameParser::create(vm, globalObject, structure, ptr);
+
+    return JSValue::encode(instance);
+}
 class JSHTMLRewriterPrototype final : public JSC::JSNonFinalObject {
 public:
     using Base = JSC::JSNonFinalObject;

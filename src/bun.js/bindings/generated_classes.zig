@@ -2945,6 +2945,80 @@ pub const JSFileSystemRouter = struct {
         }
     }
 };
+pub const JSH2FrameParser = struct {
+    const H2FrameParser = Classes.H2FrameParser;
+    const GetterType = fn (*H2FrameParser, *JSC.JSGlobalObject) callconv(.C) JSC.JSValue;
+    const GetterTypeWithThisValue = fn (*H2FrameParser, JSC.JSValue, *JSC.JSGlobalObject) callconv(.C) JSC.JSValue;
+    const SetterType = fn (*H2FrameParser, *JSC.JSGlobalObject, JSC.JSValue) callconv(.C) bool;
+    const SetterTypeWithThisValue = fn (*H2FrameParser, JSC.JSValue, *JSC.JSGlobalObject, JSC.JSValue) callconv(.C) bool;
+    const CallbackType = fn (*H2FrameParser, *JSC.JSGlobalObject, *JSC.CallFrame) callconv(.C) JSC.JSValue;
+
+    /// Return the pointer to the wrapped object.
+    /// If the object does not match the type, return null.
+    pub fn fromJS(value: JSC.JSValue) ?*H2FrameParser {
+        JSC.markBinding(@src());
+        return H2FrameParser__fromJS(value);
+    }
+
+    /// Get the H2FrameParser constructor value.
+    /// This loads lazily from the global object.
+    pub fn getConstructor(globalObject: *JSC.JSGlobalObject) JSC.JSValue {
+        JSC.markBinding(@src());
+        return H2FrameParser__getConstructor(globalObject);
+    }
+
+    /// Create a new instance of H2FrameParser
+    pub fn toJS(this: *H2FrameParser, globalObject: *JSC.JSGlobalObject) JSC.JSValue {
+        JSC.markBinding(@src());
+        if (comptime Environment.allow_assert) {
+            const value__ = H2FrameParser__create(globalObject, this);
+            std.debug.assert(value__.as(H2FrameParser).? == this); // If this fails, likely a C ABI issue.
+            return value__;
+        } else {
+            return H2FrameParser__create(globalObject, this);
+        }
+    }
+
+    /// Modify the internal ptr to point to a new instance of H2FrameParser.
+    pub fn dangerouslySetPtr(value: JSC.JSValue, ptr: ?*H2FrameParser) bool {
+        JSC.markBinding(@src());
+        return H2FrameParser__dangerouslySetPtr(value, ptr);
+    }
+
+    /// Detach the ptr from the thisValue
+    pub fn detachPtr(_: *H2FrameParser, value: JSC.JSValue) void {
+        JSC.markBinding(@src());
+        std.debug.assert(H2FrameParser__dangerouslySetPtr(value, null));
+    }
+
+    extern fn H2FrameParser__fromJS(JSC.JSValue) ?*H2FrameParser;
+    extern fn H2FrameParser__getConstructor(*JSC.JSGlobalObject) JSC.JSValue;
+
+    extern fn H2FrameParser__create(globalObject: *JSC.JSGlobalObject, ptr: ?*H2FrameParser) JSC.JSValue;
+
+    extern fn H2FrameParser__dangerouslySetPtr(JSC.JSValue, ?*H2FrameParser) bool;
+
+    comptime {
+        if (@TypeOf(H2FrameParser.constructor) != (fn (*JSC.JSGlobalObject, *JSC.CallFrame) callconv(.C) ?*H2FrameParser)) {
+            @compileLog("H2FrameParser.constructor is not a constructor");
+        }
+
+        if (@TypeOf(H2FrameParser.finalize) != (fn (*H2FrameParser) callconv(.C) void)) {
+            @compileLog("H2FrameParser.finalize is not a finalizer");
+        }
+
+        if (@TypeOf(H2FrameParser.detach) != CallbackType)
+            @compileLog("Expected H2FrameParser.detach to be a callback but received " ++ @typeName(@TypeOf(H2FrameParser.detach)));
+        if (@TypeOf(H2FrameParser.read) != CallbackType)
+            @compileLog("Expected H2FrameParser.read to be a callback but received " ++ @typeName(@TypeOf(H2FrameParser.read)));
+        if (!JSC.is_bindgen) {
+            @export(H2FrameParser.constructor, .{ .name = "H2FrameParserClass__construct" });
+            @export(H2FrameParser.detach, .{ .name = "H2FrameParserPrototype__detach" });
+            @export(H2FrameParser.finalize, .{ .name = "H2FrameParserClass__finalize" });
+            @export(H2FrameParser.read, .{ .name = "H2FrameParserPrototype__read" });
+        }
+    }
+};
 pub const JSHTMLRewriter = struct {
     const HTMLRewriter = Classes.HTMLRewriter;
     const GetterType = fn (*HTMLRewriter, *JSC.JSGlobalObject) callconv(.C) JSC.JSValue;
@@ -6804,6 +6878,7 @@ comptime {
     _ = JSFFI;
     _ = JSFSWatcher;
     _ = JSFileSystemRouter;
+    _ = JSH2FrameParser;
     _ = JSHTMLRewriter;
     _ = JSHTTPSServer;
     _ = JSHTTPServer;
