@@ -29,8 +29,31 @@ function hideFromStack(...fns) {
   }
 }
 
+/**
+ * This utility ensures that old JS code that uses functions for classes still works.
+ * Taken from https://github.com/microsoft/vscode/blob/main/src/vs/workbench/api/common/extHostTypes.ts
+ */
+function es5ClassCompat(target: Function): any {
+  const interceptFunctions = {
+    apply: function () {
+      const args = arguments.length === 1 ? [] : arguments[1];
+      return Reflect.construct(target, args, arguments[0].constructor);
+    },
+    call: function () {
+      if (arguments.length === 0) {
+        return Reflect.construct(target, []);
+      } else {
+        const [thisArg, ...restArgs] = arguments;
+        return Reflect.construct(target, restArgs, thisArg.constructor);
+      }
+    },
+  };
+  return Object.assign(target, interceptFunctions);
+}
+
 export default {
   NotImplementedError,
   throwNotImplemented,
   hideFromStack,
+  es5ClassCompat,
 };

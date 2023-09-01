@@ -1,7 +1,8 @@
 // Hardcoded module "node:tls"
 const { isArrayBufferView, isTypedArray } = require("node:util/types");
+const { es5ClassCompat } = require("$shared");
 const net = require("node:net");
-const { Server: NetServer, [Symbol.for("::bunternal::")]: InternalTCPSocket } = net;
+const { Server: NetServer, Socket: TCPSocket } = net;
 const bunSocketInternal = Symbol.for("::bunnetsocketinternal::");
 const { rootCertificates, canonicalizeIP } = $lazy("internal/tls");
 
@@ -203,7 +204,7 @@ function checkServerIdentity(hostname, cert) {
   }
 }
 
-var InternalSecureContext = class SecureContext {
+class SecureContext {
   context;
 
   constructor(options) {
@@ -258,11 +259,8 @@ var InternalSecureContext = class SecureContext {
     }
     this.context = context;
   }
-};
-
-function SecureContext(options) {
-  return new InternalSecureContext(options);
 }
+es5ClassCompat(SecureContext);
 
 function createSecureContext(options) {
   return new SecureContext(options);
@@ -299,188 +297,168 @@ function translatePeerCertificate(c) {
 
 const buntls = Symbol.for("::buntls::");
 
-var SocketClass;
-const TLSSocket = (function (InternalTLSSocket) {
-  SocketClass = InternalTLSSocket;
-  Object.defineProperty(SocketClass.prototype, Symbol.toStringTag, {
-    value: "TLSSocket",
-    enumerable: false,
-  });
+class TLSSocket extends TCPSocket {
+  #secureContext;
+  ALPNProtocols;
+  #socket;
+  #checkServerIdentity;
+  #session;
 
-  return Object.defineProperty(
-    function Socket(options) {
-      return new InternalTLSSocket(options);
-    },
-    Symbol.hasInstance,
-    {
-      value(instance) {
-        return instance instanceof InternalTLSSocket;
-      },
-    },
-  );
-})(
-  class TLSSocket extends InternalTCPSocket {
-    #secureContext;
-    ALPNProtocols;
-    #socket;
-    #checkServerIdentity;
-    #session;
-
-    constructor(socket, options) {
-      super(socket instanceof InternalTCPSocket ? options : options || socket);
-      options = options || socket || {};
-      if (typeof options === "object") {
-        const { ALPNProtocols } = options;
-        if (ALPNProtocols) {
-          convertALPNProtocols(ALPNProtocols, this);
-        }
-        if (socket instanceof InternalTCPSocket) {
-          this.#socket = socket;
-        }
+  constructor(socket, options) {
+    super(socket instanceof TCPSocket ? options : options || socket);
+    options = options || socket || {};
+    if (typeof options === "object") {
+      const { ALPNProtocols } = options;
+      if (ALPNProtocols) {
+        convertALPNProtocols(ALPNProtocols, this);
       }
-
-      this.#secureContext = options.secureContext || createSecureContext(options);
-      this.authorized = false;
-      this.secureConnecting = true;
-      this._secureEstablished = false;
-      this._securePending = true;
-      this.#checkServerIdentity = options.checkServerIdentity || checkServerIdentity;
-      this.#session = options.session || null;
-    }
-
-    _secureEstablished = false;
-    _securePending = true;
-    _newSessionPending;
-    _controlReleased;
-    secureConnecting = false;
-    _SNICallback;
-    servername;
-    authorized = false;
-    authorizationError;
-    #renegotiationDisabled = false;
-
-    encrypted = true;
-
-    _start() {
-      // some frameworks uses this _start internal implementation is suposed to start TLS handshake/connect
-      this.connect();
-    }
-
-    getSession() {
-      return this[bunSocketInternal]?.getSession();
-    }
-
-    getEphemeralKeyInfo() {
-      return this[bunSocketInternal]?.getEphemeralKeyInfo();
-    }
-
-    getCipher() {
-      return this[bunSocketInternal]?.getCipher();
-    }
-
-    getSharedSigalgs() {
-      return this[bunSocketInternal]?.getSharedSigalgs();
-    }
-
-    getProtocol() {
-      return this[bunSocketInternal]?.getTLSVersion();
-    }
-
-    getFinished() {
-      return this[bunSocketInternal]?.getTLSFinishedMessage() || undefined;
-    }
-
-    getPeerFinished() {
-      return this[bunSocketInternal]?.getTLSPeerFinishedMessage() || undefined;
-    }
-    isSessionReused() {
-      return !!this.#session;
-    }
-
-    renegotiate() {
-      if (this.#renegotiationDisabled) {
-        const error = new Error("ERR_TLS_RENEGOTIATION_DISABLED: TLS session renegotiation disabled for this socket");
-        error.name = "ERR_TLS_RENEGOTIATION_DISABLED";
-        throw error;
-      }
-
-      throw Error("Not implented in Bun yet");
-    }
-    disableRenegotiation() {
-      this.#renegotiationDisabled = true;
-    }
-    getTLSTicket() {
-      return this[bunSocketInternal]?.getTLSTicket();
-    }
-    exportKeyingMaterial(length, label, context) {
-      if (context) {
-        return this[bunSocketInternal]?.exportKeyingMaterial(length, label, context);
-      }
-      return this[bunSocketInternal]?.exportKeyingMaterial(length, label);
-    }
-
-    setMaxSendFragment(size) {
-      return this[bunSocketInternal]?.setMaxSendFragment(size) || false;
-    }
-
-    // only for debug purposes so we just mock for now
-    enableTrace() {}
-
-    setServername(name) {
-      if (this.isServer) {
-        let error = new Error("ERR_TLS_SNI_FROM_SERVER: Cannot issue SNI from a TLS server-side socket");
-        error.name = "ERR_TLS_SNI_FROM_SERVER";
-        throw error;
-      }
-      // if the socket is detached we can't set the servername but we set this property so when open will auto set to it
-      this.servername = name;
-      this[bunSocketInternal]?.setServername(name);
-    }
-    setSession(session) {
-      this.#session = session;
-      if (typeof session === "string") session = Buffer.from(session, "latin1");
-      return this[bunSocketInternal]?.setSession(session);
-    }
-    getPeerCertificate(abbreviated) {
-      const cert =
-        arguments.length < 1
-          ? this[bunSocketInternal]?.getPeerCertificate()
-          : this[bunSocketInternal]?.getPeerCertificate(abbreviated);
-      if (cert) {
-        return translatePeerCertificate(cert);
+      if (socket instanceof TCPSocket) {
+        this.#socket = socket;
       }
     }
-    getCertificate() {
-      // need to implement certificate on socket.zig
-      const cert = this[bunSocketInternal]?.getCertificate();
-      if (cert) {
-        // It's not a peer cert, but the formatting is identical.
-        return translatePeerCertificate(cert);
-      }
-    }
-    getPeerX509Certificate() {
-      throw Error("Not implented in Bun yet");
-    }
-    getX509Certificate() {
-      throw Error("Not implented in Bun yet");
+
+    this.#secureContext = options.secureContext || createSecureContext(options);
+    this.authorized = false;
+    this.secureConnecting = true;
+    this._secureEstablished = false;
+    this._securePending = true;
+    this.#checkServerIdentity = options.checkServerIdentity || checkServerIdentity;
+    this.#session = options.session || null;
+  }
+
+  _secureEstablished = false;
+  _securePending = true;
+  _newSessionPending;
+  _controlReleased;
+  secureConnecting = false;
+  _SNICallback;
+  servername;
+  authorized = false;
+  authorizationError;
+  #renegotiationDisabled = false;
+
+  encrypted = true;
+
+  _start() {
+    // some frameworks uses this _start internal implementation is suposed to start TLS handshake/connect
+    this.connect();
+  }
+
+  getSession() {
+    return this[bunSocketInternal]?.getSession();
+  }
+
+  getEphemeralKeyInfo() {
+    return this[bunSocketInternal]?.getEphemeralKeyInfo();
+  }
+
+  getCipher() {
+    return this[bunSocketInternal]?.getCipher();
+  }
+
+  getSharedSigalgs() {
+    return this[bunSocketInternal]?.getSharedSigalgs();
+  }
+
+  getProtocol() {
+    return this[bunSocketInternal]?.getTLSVersion();
+  }
+
+  getFinished() {
+    return this[bunSocketInternal]?.getTLSFinishedMessage() || undefined;
+  }
+
+  getPeerFinished() {
+    return this[bunSocketInternal]?.getTLSPeerFinishedMessage() || undefined;
+  }
+  isSessionReused() {
+    return !!this.#session;
+  }
+
+  renegotiate() {
+    if (this.#renegotiationDisabled) {
+      const error = new Error("ERR_TLS_RENEGOTIATION_DISABLED: TLS session renegotiation disabled for this socket");
+      error.name = "ERR_TLS_RENEGOTIATION_DISABLED";
+      throw error;
     }
 
-    get alpnProtocol() {
-      return this[bunSocketInternal]?.alpnProtocol;
+    throw Error("Not implented in Bun yet");
+  }
+  disableRenegotiation() {
+    this.#renegotiationDisabled = true;
+  }
+  getTLSTicket() {
+    return this[bunSocketInternal]?.getTLSTicket();
+  }
+  exportKeyingMaterial(length, label, context) {
+    if (context) {
+      return this[bunSocketInternal]?.exportKeyingMaterial(length, label, context);
     }
+    return this[bunSocketInternal]?.exportKeyingMaterial(length, label);
+  }
 
-    [buntls](port, host) {
-      return {
-        socket: this.#socket,
-        ALPNProtocols: this.ALPNProtocols,
-        serverName: this.servername || host || "localhost",
-        checkServerIdentity: this.#checkServerIdentity,
-        session: this.#session,
-        ...this.#secureContext,
-      };
+  setMaxSendFragment(size) {
+    return this[bunSocketInternal]?.setMaxSendFragment(size) || false;
+  }
+
+  // only for debug purposes so we just mock for now
+  enableTrace() {}
+
+  setServername(name) {
+    if (this.isServer) {
+      let error = new Error("ERR_TLS_SNI_FROM_SERVER: Cannot issue SNI from a TLS server-side socket");
+      error.name = "ERR_TLS_SNI_FROM_SERVER";
+      throw error;
     }
-  },
-);
+    // if the socket is detached we can't set the servername but we set this property so when open will auto set to it
+    this.servername = name;
+    this[bunSocketInternal]?.setServername(name);
+  }
+  setSession(session) {
+    this.#session = session;
+    if (typeof session === "string") session = Buffer.from(session, "latin1");
+    return this[bunSocketInternal]?.setSession(session);
+  }
+  getPeerCertificate(abbreviated) {
+    const cert =
+      arguments.length < 1
+        ? this[bunSocketInternal]?.getPeerCertificate()
+        : this[bunSocketInternal]?.getPeerCertificate(abbreviated);
+    if (cert) {
+      return translatePeerCertificate(cert);
+    }
+  }
+  getCertificate() {
+    // need to implement certificate on socket.zig
+    const cert = this[bunSocketInternal]?.getCertificate();
+    if (cert) {
+      // It's not a peer cert, but the formatting is identical.
+      return translatePeerCertificate(cert);
+    }
+  }
+  getPeerX509Certificate() {
+    throw Error("Not implented in Bun yet");
+  }
+  getX509Certificate() {
+    throw Error("Not implented in Bun yet");
+  }
+
+  get alpnProtocol() {
+    return this[bunSocketInternal]?.alpnProtocol;
+  }
+
+  [buntls](port, host) {
+    return {
+      socket: this.#socket,
+      ALPNProtocols: this.ALPNProtocols,
+      serverName: this.servername || host || "localhost",
+      checkServerIdentity: this.#checkServerIdentity,
+      session: this.#session,
+      ...this.#secureContext,
+    };
+  }
+}
+es5ClassCompat(TLSSocket);
 
 class Server extends NetServer {
   key;

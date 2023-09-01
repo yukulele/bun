@@ -1,4 +1,5 @@
 // Hardcoded module "node:http"
+const { es5ClassCompat } = require("$shared");
 const EventEmitter = require("node:events");
 const { isTypedArray } = require("node:util/types");
 const { Duplex, Readable, Writable } = require("node:stream");
@@ -555,6 +556,7 @@ class Server extends EventEmitter {
   }
   setTimeout(msecs, callback) {}
 }
+es5ClassCompat(Server);
 
 function assignHeaders(object, req) {
   var headers = req.headers.toJSON();
@@ -736,6 +738,7 @@ class IncomingMessage extends Readable {
     throw new Error("not implemented");
   }
 }
+es5ClassCompat(IncomingMessage);
 
 function emitErrorNt(msg, err, callback) {
   callback(err);
@@ -952,6 +955,7 @@ class OutgoingMessage extends Writable {
     return this;
   }
 }
+es5ClassCompat(OutgoingMessage);
 
 let OriginalWriteHeadFn, OriginalImplicitHeadFn;
 class ServerResponse extends Writable {
@@ -1188,6 +1192,7 @@ class ServerResponse extends Writable {
     return this;
   }
 }
+es5ClassCompat(ServerResponse);
 
 OriginalWriteHeadFn = ServerResponse.prototype.writeHead;
 OriginalImplicitHeadFn = ServerResponse.prototype._implicitHeader;
@@ -1607,6 +1612,7 @@ class ClientRequest extends OutgoingMessage {
     return this;
   }
 }
+es5ClassCompat(ClientRequest);
 
 function urlToHttpOptions(url) {
   var { protocol, hostname, hash, search, pathname, href, port, username, password } = url;
