@@ -137,6 +137,12 @@ void GlobalObject::initGeneratedLazyClasses() {
                  init.setStructure(WebCore::JSFileSystemRouter::createStructure(init.vm, init.global, init.prototype));
                  init.setConstructor(WebCore::JSFileSystemRouter::createConstructor(init.vm, init.global, init.prototype));
               });
+    m_JSH2FrameParser.initLater(
+              [](LazyClassStructure::Initializer& init) {
+                 init.setPrototype(WebCore::JSH2FrameParser::createPrototype(init.vm, reinterpret_cast<Zig::GlobalObject*>(init.global)));
+                 init.setStructure(WebCore::JSH2FrameParser::createStructure(init.vm, init.global, init.prototype));
+                 init.setConstructor(WebCore::JSH2FrameParser::createConstructor(init.vm, init.global, init.prototype));
+              });
     m_JSHTMLRewriter.initLater(
               [](LazyClassStructure::Initializer& init) {
                  init.setPrototype(WebCore::JSHTMLRewriter::createPrototype(init.vm, reinterpret_cast<Zig::GlobalObject*>(init.global)));
@@ -320,6 +326,7 @@ void GlobalObject::visitGeneratedLazyClasses(GlobalObject *thisObject, Visitor& 
       thisObject->m_JSFFI.visit(visitor);  visitor.append(thisObject->m_JSFFISetterValue);
       thisObject->m_JSFSWatcher.visit(visitor);  visitor.append(thisObject->m_JSFSWatcherSetterValue);
       thisObject->m_JSFileSystemRouter.visit(visitor);  visitor.append(thisObject->m_JSFileSystemRouterSetterValue);
+      thisObject->m_JSH2FrameParser.visit(visitor);  visitor.append(thisObject->m_JSH2FrameParserSetterValue);
       thisObject->m_JSHTMLRewriter.visit(visitor);  visitor.append(thisObject->m_JSHTMLRewriterSetterValue);
       thisObject->m_JSHTTPSServer.visit(visitor);  visitor.append(thisObject->m_JSHTTPSServerSetterValue);
       thisObject->m_JSHTTPServer.visit(visitor);  visitor.append(thisObject->m_JSHTTPServerSetterValue);

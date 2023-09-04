@@ -136,6 +136,12 @@ JSC::Structure* JSFileSystemRouterStructure() { return m_JSFileSystemRouter.getI
   JSC::LazyClassStructure m_JSFileSystemRouter;
   bool hasJSFileSystemRouterSetterValue { false };
   mutable JSC::WriteBarrier<JSC::Unknown> m_JSFileSystemRouterSetterValue;
+JSC::Structure* JSH2FrameParserStructure() { return m_JSH2FrameParser.getInitializedOnMainThread(this); }
+        JSC::JSObject* JSH2FrameParserConstructor() { return m_JSH2FrameParser.constructorInitializedOnMainThread(this); }
+        JSC::JSValue JSH2FrameParserPrototype() { return m_JSH2FrameParser.prototypeInitializedOnMainThread(this); }
+  JSC::LazyClassStructure m_JSH2FrameParser;
+  bool hasJSH2FrameParserSetterValue { false };
+  mutable JSC::WriteBarrier<JSC::Unknown> m_JSH2FrameParserSetterValue;
 JSC::Structure* JSHTMLRewriterStructure() { return m_JSHTMLRewriter.getInitializedOnMainThread(this); }
         JSC::JSObject* JSHTMLRewriterConstructor() { return m_JSHTMLRewriter.constructorInitializedOnMainThread(this); }
         JSC::JSValue JSHTMLRewriterPrototype() { return m_JSHTMLRewriter.prototypeInitializedOnMainThread(this); }
