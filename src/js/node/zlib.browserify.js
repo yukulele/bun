@@ -4111,14 +4111,17 @@ var require_lib = __commonJS({
     }
     function Deflate(opts) {
       if (!(this instanceof Deflate)) return new Deflate(opts);
+      console.log("new Deflate");
       Zlib.call(this, opts, binding.DEFLATE);
     }
     function Inflate(opts) {
       if (!(this instanceof Inflate)) return new Inflate(opts);
+      console.log("new Inflate");
       Zlib.call(this, opts, binding.INFLATE);
     }
     function Gzip(opts) {
       if (!(this instanceof Gzip)) return new Gzip(opts);
+      console.log("new Gzip");
       Zlib.call(this, opts, binding.GZIP);
     }
     function Gunzip(opts) {
@@ -4127,14 +4130,17 @@ var require_lib = __commonJS({
     }
     function DeflateRaw(opts) {
       if (!(this instanceof DeflateRaw)) return new DeflateRaw(opts);
+      console.log("new DeflateRaw");
       Zlib.call(this, opts, binding.DEFLATERAW);
     }
     function InflateRaw(opts) {
       if (!(this instanceof InflateRaw)) return new InflateRaw(opts);
+      console.log("new InflateRaw");
       Zlib.call(this, opts, binding.INFLATERAW);
     }
     function Unzip(opts) {
       if (!(this instanceof Unzip)) return new Unzip(opts);
+      console.log("new Unzip");
       Zlib.call(this, opts, binding.UNZIP);
     }
     function isValidFlushFlag(flag) {
