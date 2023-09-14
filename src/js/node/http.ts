@@ -654,7 +654,7 @@ class IncomingMessage extends Readable {
       if (this.aborted) return;
       if (done) {
         this.push(null);
-        this.destroy();
+        process.nextTick(destroyBodyStreamNT, this);
         break;
       }
       for (var v of value) {
@@ -1292,8 +1292,8 @@ class ClientRequest extends OutgoingMessage {
 
         // Timeouts are handled via this.setTimeout.
         timeout: false,
-        // Disable auto gzip/deflate
-        decompress: false,
+        // TODO: check zlib to disable this
+        decompress: true,
       })
         .then(response => {
           var res = (this.#res = new IncomingMessage(response, {
