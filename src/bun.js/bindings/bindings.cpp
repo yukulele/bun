@@ -3955,7 +3955,6 @@ void JSC__Exception__getStackTrace(JSC__Exception* arg0, ZigStackTrace* trace)
 JSC__JSValue JSC__VM__runGC(JSC__VM* vm, bool sync)
 {
     JSC::JSLockHolder lock(vm);
-
     vm->finalizeSynchronousJSExecution();
     WTF::releaseFastMallocFreeMemory();
 
@@ -4672,6 +4671,14 @@ CPP_DECL double JSC__JSValue__getUnixTimestamp(JSC__JSValue timeValue)
         return PNaN;
 
     return date->internalNumber();
+}
+
+extern "C" EncodedJSValue JSC__JSValue__dateInstanceFromNullTerminatedString(JSC::JSGlobalObject* globalObject, const char* nullTerminatedChars)
+{
+    double dateSeconds = WTF::parseDateFromNullTerminatedCharacters(nullTerminatedChars);
+    JSC::DateInstance* date = JSC::DateInstance::create(globalObject->vm(), globalObject->dateStructure(), dateSeconds);
+
+    return JSValue::encode(date);
 }
 
 #pragma mark - WebCore::DOMFormData
