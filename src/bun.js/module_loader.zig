@@ -2048,6 +2048,7 @@ pub const ModuleLoader = struct {
 
                 // These are defined in src/js/*
                 .@"bun:ffi" => return jsSyntheticModule(.@"bun:ffi", specifier),
+                .@"bun:sql" => return jsSyntheticModule(.@"bun:sql", specifier),
                 .@"bun:sqlite" => return jsSyntheticModule(.@"bun:sqlite", specifier),
                 .@"detect-libc" => return jsSyntheticModule(if (Environment.isLinux) .@"detect-libc/linux" else .@"detect-libc", specifier),
                 .@"node:assert" => return jsSyntheticModule(.@"node:assert", specifier),
@@ -2220,6 +2221,7 @@ pub const HardcodedModule = enum {
     @"bun:ffi",
     @"bun:jsc",
     @"bun:main",
+    @"bun:sql",
     @"bun:sqlite",
     @"detect-libc",
     @"node:assert",
@@ -2293,7 +2295,9 @@ pub const HardcodedModule = enum {
             .{ "bun:ffi", HardcodedModule.@"bun:ffi" },
             .{ "bun:jsc", HardcodedModule.@"bun:jsc" },
             .{ "bun:main", HardcodedModule.@"bun:main" },
+            .{ "bun:sql", HardcodedModule.@"bun:sql" },
             .{ "bun:sqlite", HardcodedModule.@"bun:sqlite" },
+
             .{ "detect-libc", HardcodedModule.@"detect-libc" },
             .{ "node-fetch", HardcodedModule.@"node-fetch" },
             .{ "isomorphic-fetch", HardcodedModule.@"isomorphic-fetch" },
@@ -2504,6 +2508,7 @@ pub const HardcodedModule = enum {
             .{ "bun:ffi", .{ .path = "bun:ffi" } },
             .{ "bun:jsc", .{ .path = "bun:jsc" } },
             .{ "bun:sqlite", .{ .path = "bun:sqlite" } },
+            .{ "bun:sql", .{ .path = "bun:sql" } },
             .{ "bun:wrap", .{ .path = "bun:wrap" } },
             .{ "ffi", .{ .path = "bun:ffi" } },
 
